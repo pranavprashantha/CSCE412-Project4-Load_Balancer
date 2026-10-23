@@ -1,0 +1,4 @@
+*.o
+loadbalancer
+docs/
+log*.txt
