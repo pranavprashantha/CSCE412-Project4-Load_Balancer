@@ -15,3 +15,5 @@ struct Request {
   void randomize(int min, int max);
   std::string randomIP(); 
 }
+
+#endif
