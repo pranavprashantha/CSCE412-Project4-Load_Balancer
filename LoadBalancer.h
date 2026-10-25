@@ -2,7 +2,7 @@
 #define "LOADBALANCER_H"
 
 #include "Request.h"
-#include "WebServer.h"
+#include "Webserver.h"
 #include "Firewall.h"
 
 #include <vector>
@@ -26,18 +26,19 @@ class LoadBalancer {
 
     //Log vars
 
-    int requestsPassed;
-    int requestsBlocked;
-    int pRequests;
-    int sRequests;
+    int requestsPassed = 0;
+    int requestsBlocked = 0;
+    int requestsFinished = 0;
+    int pRequests = 0;
+    int sRequests = 0;
 
-    int serverStartCount;
-    int maxServers;
-    int serversAdded;
-    int serversRemoved;
+    int serverStartCount = 0;
+    int maxServers = 0;
+    int serversAdded = 0;
+    int serversRemoved = 0;
 
-    int queueStartCount;
-    int queueMaxCount;
+    int queueStartCount = 0;
+    int queueMaxCount = 0;
 
     int getServerCount;
     void logEvent(std::string& color, std::string& message);
@@ -47,7 +48,7 @@ class LoadBalancer {
     LoadBalancer(int numServers, int scaleCycleNum, bool verbose, std::ostream& log);
     bool addRequest(Request& r);
     void addFirewallRule(std::string min, std::string max);
-    void runCycle();
+    void cycle();
     void summaryStart();
     void endSummary();
 }

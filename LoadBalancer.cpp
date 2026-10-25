@@ -39,5 +39,68 @@ LoadBalancer::addRequest(Request& r) {
   return false;
 
 
-  requestQueue.push(r);
+}
+
+LoadBalancer::cycle() {
+  if (clock == 0) {
+    queueStartCount = requestQueue.size();
+  }
+
+  for (auto it = servers.begin(); it != servers.end(); ) {
+      if (it->isFree() && !it->isAborting() && !requestQueue.empty()) {
+          it->assign(requestQueue.front());
+          qrequestQueueueue.pop();
+      }
+      if (it->processCycle()) {
+          requestsFinished++;
+      }
+      if (it->isAborting() && it->isFree()) {
+          logEvent(YELLOW, "Removed server " + std::to_string(it->getId()));
+          serversRemoved++;
+          it = servers.erase(it);
+      } else {
+          ++it;
+      }
+  }
+
+  if(clock - scaleCycle >= scaleN) {
+
+    if(requestQueue.size() > 80 * getServerCount()) {
+      servers.push_back(Webserver());
+      serversAdded++;
+      maxServers = std::max(maxServers, getServerCount());
+      logEvent(GREEN, "Added server " + std::to_string(servers.back().getID) + "(new queue size: " + std::to_string(requestQueue.size()) + ")");
+      scaleCycle = clock;
+    }
+    else if(requestQueue.size() < 50 * getServerCount()) {
+      if(getServerCount() > 1) {
+        int i = servers.size() -1;
+
+        while(i >= 0  && servers[i].isAborting()) {
+          i--;
+        }
+
+        if(i >=0) {
+          servers[i].startAbort();
+          logEvent(YELLOW, "Server " + std::to_string(servers[i].getId()) + " killed (new queue size: " + std::to_string(requestQueue.size()) + ")");
+        }
+        scaleCycle = clock;
+
+      }
+
+
+    }
+
+  }
+
+  clock++;
+  if (clock % STATUS_EVERY == 0) {
+    logEvent(BLUE, "Status: queue " + std::to_string(requestQueue.size()) + ", servers " + std::to_string(getServerCount()));
+  }
+
+
+}
+
+LoadBalancer::addFirewallRule(std::string min, std::string max) {
+  firewall.addToBlocked(min, max);
 }
