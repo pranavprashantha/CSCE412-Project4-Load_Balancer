@@ -9,6 +9,7 @@
 #include <ostream>
 #include <queue>
 #include <string>
+#include <iostream>
 
 class LoadBalancer {
   private:
@@ -21,6 +22,7 @@ class LoadBalancer {
     std::queue<Request> requestQueue;
     std::vector<Webserver> servers;
     std::ostream& log;
+    Firewall firewall;
 
     //Log vars
 
@@ -39,9 +41,6 @@ class LoadBalancer {
 
     int getServerCount;
     void logEvent(std::string& color, std::string& message);
-
-    int getQueueSize();
-    int getServerSize();
     
 
   public:
