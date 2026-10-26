@@ -101,6 +101,60 @@ LoadBalancer::cycle() {
 
 }
 
+int LoadBalancer::getServerCount() {
+  int total;
+  for(Webserver& server : servers) {
+    if(!server.isAborting()) {
+      total++;
+    } 
+  }
+
+  return total;
+
+}
+
 LoadBalancer::addFirewallRule(std::string min, std::string max) {
   firewall.addToBlocked(min, max);
 }
+
+void LoadBalancer::logEvent(const std::string& color, const std::string& message) {
+    if (!verbose) {
+        return;
+    }
+    std::string line = "[Cycle " + std::to_string(clock) + "] " + message;
+    std::cout << color << line << RESET << "\n";
+    log << line << "\n";
+}
+
+void LoadBalancer::summaryStart() {
+    std::ostringstream out;
+    out << "========= Start Summary =========\n"
+        << "Servers:            " << getServerCount() << "\n"
+        << "Queue size:         " << requestQueue.size() << "\n"
+        << "Scale wait (n):     " << scaleN << " cycles\n"
+        << "Requests blocked:   " << requestsBlocked << "\n"
+        << "=================================\n";
+    std::cout << out.str();
+    log << out.str();
+}
+
+void LoadBalancer::endSummary() {
+    std::ostringstream out;
+    out << "========== End Summary ==========\n"
+        << "Total cycles:       " << clock << "\n"
+        << "Requests generated: " << requestsPassed + requestsBlocked << "\n"
+        << "Requests passed:    " << requestsPassed
+        << " (P: " << pRequests << ", S: " << sRequests << ")\n"
+        << "Requests blocked:   " << requestsBlocked << "\n"
+        << "Requests finished:  " << requestsFinished << "\n"
+        << "Queue size:         start " << queueStartCount << ", end " << requestQueue.size()
+        << ", largest " << queueMaxCount << "\n"
+        << "Servers:            start " << serverStartCount << ", end " << getServerCount()
+        << ", highest " << maxServers << "\n"
+        << "Servers added:      " << serversAdded << "\n"
+        << "Servers removed:    " << serversRemoved << "\n"
+        << "=================================\n";
+    std::cout << out.str();
+    log << out.str();
+}
+

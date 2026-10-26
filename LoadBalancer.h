@@ -40,7 +40,7 @@ class LoadBalancer {
     int queueStartCount = 0;
     int queueMaxCount = 0;
 
-    int getServerCount;
+    int getServerCount();
     void logEvent(std::string& color, std::string& message);
     
 
