@@ -1,3 +1,7 @@
+/**
+ * @file Webserver.cpp
+ * @brief Implementation of Webserver.
+ */
 #include "Webserver.h"
 
 int Webserver::nextID = 1;

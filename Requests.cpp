@@ -1,3 +1,7 @@
+/**
+ * @file Requests.cpp
+ * @brief Implementation of Request and randomInt.
+ */
 #include "Requests.h"
 
 #include <random>

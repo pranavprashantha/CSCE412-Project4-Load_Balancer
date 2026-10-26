@@ -1,3 +1,7 @@
+/**
+ * @file LoadBalancer.cpp
+ * @brief Implementation of LoadBalancer.
+ */
 #include "LoadBalancer.h"
 
 const std::string GREEN  = "\033[32m";

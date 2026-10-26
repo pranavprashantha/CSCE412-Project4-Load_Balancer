@@ -1,3 +1,7 @@
+/**
+ * @file Firewall.cpp
+ * @brief Implementation of Firewall and ipToNum.
+ */
 #include "Firewall.h"
 
 long long ipToNum(const std::string& ip) {
