@@ -15,6 +15,7 @@ class LoadBalancer {
   private:
 
     int clock;
+    int totalCycles;
     bool verbose;
     int scaleCycle;
     int scaleN;
@@ -47,7 +48,7 @@ class LoadBalancer {
   public:
     LoadBalancer(int numServers, int scaleCycleNum, bool verbose, std::ostream& log);
     bool addRequest(Request& r);
-    void addFirewallRule(std::string min, std::string max);
+    void addFirewall(std::string min, std::string max);
     void cycle();
     void summaryStart();
     void endSummary();

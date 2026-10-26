@@ -7,7 +7,7 @@ const std::string BLUE   = "\033[34m";
 const std::string RESET  = "\033[0m";
 const int STATUS_EVERY = 5000;
 
-LoadBalancer::LoadBalancer(int servers, int cycle, bool verbose, ostream& log) : clock(0), verbose(verbose), scaleCycle(0), scaleN(cycle), log(log) {
+LoadBalancer::LoadBalancer(int servers, int cycle, bool verbose, ostream& log, int totalCycles) : clock(0), verbose(verbose), scaleCycle(0), scaleN(cycle), log(log) , totalCycles(totalCycles){
   serverStartCount = servers;
   maxServers = servers;
 
@@ -44,6 +44,7 @@ LoadBalancer::addRequest(Request& r) {
 LoadBalancer::cycle() {
   if (clock == 0) {
     queueStartCount = requestQueue.size();
+    summaryStart()
   }
 
   for (auto it = servers.begin(); it != servers.end(); ) {
@@ -98,7 +99,9 @@ LoadBalancer::cycle() {
     logEvent(BLUE, "Status: queue " + std::to_string(requestQueue.size()) + ", servers " + std::to_string(getServerCount()));
   }
 
-
+  if(clock == totalCycles) {
+    endSummary();
+  }
 }
 
 int LoadBalancer::getServerCount() {
@@ -113,7 +116,7 @@ int LoadBalancer::getServerCount() {
 
 }
 
-LoadBalancer::addFirewallRule(std::string min, std::string max) {
+LoadBalancer::addFirewall(std::string min, std::string max) {
   firewall.addToBlocked(min, max);
 }
 

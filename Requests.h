@@ -3,7 +3,7 @@
 
 #include <string>
 
-int randomInt(int min, int max)
+int randomInt(int min, int max);
 
 struct Request {
   std::string ipIN;
