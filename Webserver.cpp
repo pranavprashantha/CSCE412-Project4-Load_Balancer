@@ -1,5 +1,7 @@
 #include "Webserver.h"
 
+int Webserver::nextID = 1;
+
 Webserver::Webserver () : id(nextID++), timeLeftForCurrent(0), abort(false), r{} {}
 
 void Webserver::assign(Request& req) {
@@ -13,17 +15,15 @@ bool Webserver::runCycle() {
   }
   timeLeftForCurrent--;
 
-  if(timeLeftForCurrent == 0) {
-    return false;
-  }
-  return true;
+  // true only on the cycle the current request finishes
+  return timeLeftForCurrent == 0;
 }
 
 bool Webserver::isFree() {
   return timeLeftForCurrent == 0;
 }
 
-void Webserver::getID() {
+int Webserver::getID() {
   return id;
 }
 
@@ -31,6 +31,6 @@ void Webserver::startAbort() {
   abort = true;
 }
 
-int Webserver::isAborting() {
+bool Webserver::isAborting() {
   return abort;
 }

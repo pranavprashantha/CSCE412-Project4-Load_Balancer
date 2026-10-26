@@ -1,6 +1,8 @@
 #ifndef WEBSERVER_H
 #define WEBSERVER_H
 
+#include "Requests.h"
+
 class Webserver {
   private:
     static int nextID;
@@ -12,7 +14,7 @@ class Webserver {
 
   public:
 
-    Webserver(int id);
+    Webserver();
     void assign(Request& r);
     bool runCycle();
 
@@ -24,6 +26,6 @@ class Webserver {
 
 
 
-}
+};
 
 #endif

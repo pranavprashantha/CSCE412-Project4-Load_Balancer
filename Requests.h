@@ -13,7 +13,7 @@ struct Request {
   char jobType;
 
   void randomize(int min, int max);
-  std::string randomIP(); 
-}
+  std::string randomIP();
+};
 
 #endif

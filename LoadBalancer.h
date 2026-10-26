@@ -1,7 +1,7 @@
-#idndef "LOADBALANCER_H"
-#define "LOADBALANCER_H"
+#ifndef LOADBALANCER_H
+#define LOADBALANCER_H
 
-#include "Request.h"
+#include "Requests.h"
 #include "Webserver.h"
 #include "Firewall.h"
 
@@ -10,6 +10,8 @@
 #include <queue>
 #include <string>
 #include <iostream>
+#include <sstream>
+#include <algorithm>
 
 class LoadBalancer {
   private:
@@ -42,16 +44,16 @@ class LoadBalancer {
     int queueMaxCount = 0;
 
     int getServerCount();
-    void logEvent(std::string& color, std::string& message);
-    
+    void logEvent(const std::string& color, const std::string& message);
+
 
   public:
-    LoadBalancer(int numServers, int scaleCycleNum, bool verbose, std::ostream& log);
+    LoadBalancer(int numServers, int scaleCycleNum, bool verbose, std::ostream& log, int totalCycles);
     bool addRequest(Request& r);
     void addFirewall(std::string min, std::string max);
     void cycle();
     void summaryStart();
     void endSummary();
-}
+};
 
 #endif

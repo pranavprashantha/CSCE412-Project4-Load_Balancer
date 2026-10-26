@@ -5,15 +5,15 @@
 #include <string>
 #include <sstream>
 
-long long ipToNum(std::string& ip);
+long long ipToNum(const std::string& ip);
 
 class Firewall {
   private:
-    std::vector<vector<long long>> ranges;
+    std::vector<std::vector<long long>> ranges;
 
   public:
-    bool blocked(std::string& ipToCheck);
-    void addToBlocked(std::string& lowerIP, std::string& upperIP);
-}
+    bool blocked(const std::string& ipToCheck);
+    void addToBlocked(const std::string& lowerIP, const std::string& upperIP);
+};
 
 #endif

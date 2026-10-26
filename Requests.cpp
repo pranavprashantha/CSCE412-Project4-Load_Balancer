@@ -18,11 +18,11 @@ std::string Request::randomIP() {
 
 }
 
-void Requests::randomize(int min, int max) {
+void Request::randomize(int min, int max) {
   this->ipIN = randomIP();
   this->ipOUT = randomIP();
 
-  this->time = randomIP(min, max);
+  this->time = randomInt(min, max);
 
   int pOrS = randomInt(0,1);
 
